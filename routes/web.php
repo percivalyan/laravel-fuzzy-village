@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HargaController;
+use App\Http\Controllers\LahanController;
 
 Route::get('/', function () {
     return view('layouts/app');
@@ -27,3 +28,5 @@ Route::get('/harga/{id}', [HargaController::class, 'show'])->name('harga.show');
 
 // Rute untuk menghapus harga (jika diperlukan)
 Route::delete('/harga/{id}', [HargaController::class, 'destroy'])->name('harga.destroy');
+
+Route::resource('lahan', LahanController::class);
