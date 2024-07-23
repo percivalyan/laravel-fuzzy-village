@@ -8,18 +8,19 @@
         @method('PUT')
         <div class="form-group">
             <label for="lahan_id">Lahan</label>
-            <select name="lahan_id" id="lahan_id" class="form-control @error('lahan_id') is-invalid @enderror">
-                <option value="">Pilih Lahan</option>
+            <p id="lahan_id_display">
                 @foreach($lahans as $lahan)
-                <option value="{{ $lahan->id }}" {{ $foto->lahan_id == $lahan->id ? 'selected' : '' }}>
-                    {{ $lahan->nomor_lahan }} - {{ $lahan->pemilik }}
-                </option>
+                    @if($lahan->id == $foto->lahan_id)
+                        {{ $lahan->nomor_lahan }} - {{ $lahan->pemilik }}
+                    @endif
                 @endforeach
-            </select>
+            </p>
+            <input type="hidden" name="lahan_id" id="lahan_id" value="{{ $foto->lahan_id }}">
             @error('lahan_id')
-            <div class="invalid-feedback">{{ $message }}</div>
+                <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
+        
         
         @for ($i = 1; $i <= 4; $i++)
             <div class="form-group">

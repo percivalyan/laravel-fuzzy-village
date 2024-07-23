@@ -14,7 +14,12 @@
                 @csrf
                 <div class="form-group">
                     <label for="status_lahan">Status Lahan</label>
-                    <input type="text" class="form-control" id="status_lahan" name="status_lahan" required>
+                    <select class="form-control" id="status_lahan" name="status_lahan" required>
+                        <option value="" disabled selected>Select Status</option>
+                        <option value="Lahan produktif Tani">Lahan produktif Tani</option>
+                        <option value="Lahan tidak produktif">Lahan tidak produktif</option>
+                        <option value="Lahan kosong">Lahan kosong</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="nomor_lahan">Nomor Lahan</label>

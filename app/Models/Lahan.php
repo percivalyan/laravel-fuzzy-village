@@ -22,4 +22,9 @@ class Lahan extends Model
     {
         return $this->hasOne(Foto::class);
     }
+
+    public function kesuburan()
+    {
+        return $this->hasOne(Kesuburan::class);
+    }
 }
