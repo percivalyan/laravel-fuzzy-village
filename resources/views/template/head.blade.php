@@ -10,3 +10,6 @@
 
 <!-- Custom styles for this template-->
 <link href="{{ asset('template/css/sb-admin-2.min.css') }}" rel="stylesheet">
+
+<!-- Lightbox2 CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">

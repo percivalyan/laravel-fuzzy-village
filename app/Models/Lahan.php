@@ -17,4 +17,9 @@ class Lahan extends Model
         'koordinat',
         'keterangan',
     ];
+
+    public function foto()
+    {
+        return $this->hasOne(Foto::class);
+    }
 }

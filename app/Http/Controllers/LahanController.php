@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Lahan;
+use App\Models\Foto;
 use Illuminate\Http\Request;
 
 class LahanController extends Controller
 {
     public function index()
     {
-        $lahans = Lahan::all();
+        $lahans = Lahan::with('foto')->get();
         return view('lahan.index', compact('lahans'));
     }
 
@@ -37,6 +38,7 @@ class LahanController extends Controller
 
     public function show(Lahan $lahan)
     {
+        $lahan->load('foto');
         return view('lahan.show', compact('lahan'));
     }
 
