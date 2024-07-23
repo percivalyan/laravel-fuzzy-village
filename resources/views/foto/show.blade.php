@@ -13,28 +13,36 @@
 
             @if($foto->foto_1)
             <div class="mb-3">
-                <img src="{{ asset('storage/' . $foto->foto_1) }}" alt="Foto 1" class="img-fluid">
+                <a href="{{ asset('storage/' . $foto->foto_1) }}" data-lightbox="foto-{{ $foto->id }}" data-title="{{ $foto->keterangan_1 }}">
+                    <img src="{{ asset('storage/' . $foto->foto_1) }}" alt="Foto 1" class="img-fluid">
+                </a>
                 <p><strong>Keterangan 1:</strong> {{ $foto->keterangan_1 }}</p>
             </div>
             @endif
 
             @if($foto->foto_2)
             <div class="mb-3">
-                <img src="{{ asset('storage/' . $foto->foto_2) }}" alt="Foto 2" class="img-fluid">
+                <a href="{{ asset('storage/' . $foto->foto_2) }}" data-lightbox="foto-{{ $foto->id }}" data-title="{{ $foto->keterangan_2 }}">
+                    <img src="{{ asset('storage/' . $foto->foto_2) }}" alt="Foto 2" class="img-fluid">
+                </a>
                 <p><strong>Keterangan 2:</strong> {{ $foto->keterangan_2 }}</p>
             </div>
             @endif
 
             @if($foto->foto_3)
             <div class="mb-3">
-                <img src="{{ asset('storage/' . $foto->foto_3) }}" alt="Foto 3" class="img-fluid">
+                <a href="{{ asset('storage/' . $foto->foto_3) }}" data-lightbox="foto-{{ $foto->id }}" data-title="{{ $foto->keterangan_3 }}">
+                    <img src="{{ asset('storage/' . $foto->foto_3) }}" alt="Foto 3" class="img-fluid">
+                </a>
                 <p><strong>Keterangan 3:</strong> {{ $foto->keterangan_3 }}</p>
             </div>
             @endif
 
             @if($foto->foto_4)
             <div class="mb-3">
-                <img src="{{ asset('storage/' . $foto->foto_4) }}" alt="Foto 4" class="img-fluid">
+                <a href="{{ asset('storage/' . $foto->foto_4) }}" data-lightbox="foto-{{ $foto->id }}" data-title="{{ $foto->keterangan_4 }}">
+                    <img src="{{ asset('storage/' . $foto->foto_4) }}" alt="Foto 4" class="img-fluid">
+                </a>
                 <p><strong>Keterangan 4:</strong> {{ $foto->keterangan_4 }}</p>
             </div>
             @endif
