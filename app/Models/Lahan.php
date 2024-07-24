@@ -27,4 +27,9 @@ class Lahan extends Model
     {
         return $this->hasOne(Kesuburan::class);
     }
+
+    public function periode()
+    {
+        return $this->hasOne(Periode::class);
+    }
 }

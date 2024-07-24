@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container-fluid">
-        <h1 class="h3 mb-2 text-gray-800">Lahan List</h1>
+        <h1 class="h3 mb-2 text-gray-800">Daftar Lahan</h1>
         <a href="{{ route('lahan.create') }}" class="btn btn-primary mb-4">Create New Lahan</a>
 
         <div class="card shadow mb-4">
@@ -13,8 +13,8 @@
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
-                            <tr>
-                                <th>ID</th>
+                            <tr class="text-center">
+                                <th>No.</th>
                                 <th>Status Lahan</th>
                                 <th>Nomor Lahan</th>
                                 <th>Pemilik</th>
@@ -25,16 +25,16 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($lahans as $lahan)
+                            @foreach ($lahans as $index => $lahan)
                                 <tr>
-                                    <td>{{ $lahan->id }}</td>
+                                    <td>{{ $index + 1 }}</td>
                                     <td>{{ $lahan->status_lahan }}</td>
                                     <td>{{ $lahan->nomor_lahan }}</td>
                                     <td>{{ $lahan->pemilik }}</td>
                                     <td>{{ $lahan->lokasi }}</td>
                                     <td>{{ $lahan->koordinat }}</td>
                                     <td>{{ $lahan->keterangan }}</td>
-                                    <td>
+                                    <td class="text-center">
                                         <a href="{{ route('lahan.show', $lahan->id) }}" class="btn btn-info btn-sm">Show</a>
                                         <a href="{{ route('lahan.edit', $lahan->id) }}" class="btn btn-warning btn-sm">Edit</a>
                                         <form action="{{ route('lahan.destroy', $lahan->id) }}" method="POST" style="display:inline-block;">
