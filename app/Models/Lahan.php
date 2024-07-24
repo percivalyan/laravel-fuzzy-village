@@ -18,6 +18,10 @@ class Lahan extends Model
         'keterangan',
     ];
 
+    public function harga()
+    {
+        return $this->hasOne(Harga::class);
+    }
     public function foto()
     {
         return $this->hasOne(Foto::class);

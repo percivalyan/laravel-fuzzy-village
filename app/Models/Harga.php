@@ -10,10 +10,16 @@ class Harga extends Model
     use HasFactory;
 
     protected $fillable = [
+        'lahan_id',
         'harga_per_hektar',
         'luas_per_hektar',
         'harga_sebenarnya',
     ];
 
     public $timestamps = true;
+
+    public function lahan()
+    {
+        return $this->belongsTo(Lahan::class);
+    }
 }

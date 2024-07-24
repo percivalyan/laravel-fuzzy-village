@@ -4,114 +4,124 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Harga;
+use App\Models\Lahan;
 
 class HargaController extends Controller
 {
     // Menampilkan daftar harga
     public function index()
     {
-        $hargas = Harga::all()->map(function ($harga) {
+        // Mengambil semua harga dengan relasi lahan
+        $hargas = Harga::with('lahan')->get()->map(function ($harga) {
+            // Menambahkan nilai fuzzy dan kesimpulan ke setiap harga
             $harga->nilai_fuzzy = $this->evaluateFuzzy($harga->harga_per_hektar);
             $harga->kesimpulan_nilai_fuzzy = $this->getKesimpulan($harga->harga_per_hektar);
             return $harga;
         });
-    
+
+        // Mengirim data ke view
         return view('harga.index', compact('hargas'));
     }
 
     // Menampilkan form untuk membuat harga baru
     public function create()
     {
-        return view('harga.create');
+        $usedLahanIds = Harga::pluck('lahan_id')->toArray();
+        $lahans = Lahan::whereNotIn('id', $usedLahanIds)->get();
+        return view('harga.create', compact('lahans'));
     }
 
     // Menyimpan data harga baru
-public function store(Request $request)
-{
-    $request->validate([
-        'harga_per_hektar' => 'required|numeric',
-        'luas_per_hektar' => 'required|numeric',
-    ]);
-
-    $harga_per_hektar = $request->input('harga_per_hektar');
-    $luas_per_hektar = $request->input('luas_per_hektar');
-    $harga_sebenarnya = $harga_per_hektar * $luas_per_hektar;
-
-    // Hitung nilai fuzzy, nilai crisp, dan kesimpulan
-    $nilai_fuzzy = $this->evaluateFuzzy($harga_per_hektar);
-    $nilai_crisp = $this->calculateCrispValue($harga_per_hektar);
-    $kesimpulan_nilai_fuzzy = $this->getKesimpulan($harga_per_hektar);
-
-    // Simpan data dalam database
-    Harga::create([
-        'harga_per_hektar' => $harga_per_hektar,
-        'luas_per_hektar' => $luas_per_hektar,
-        'harga_sebenarnya' => $harga_sebenarnya,
-    ]);
-
-    // Kirim data tambahan ke view
-    return redirect()->route('harga.index')
-        ->with('success', 'Harga berhasil ditambahkan.')
-        ->with([
-            'nilai_fuzzy' => $nilai_fuzzy,
-            'nilai_crisp' => $nilai_crisp,
-            'kesimpulan_nilai_fuzzy' => $kesimpulan_nilai_fuzzy,
+    public function store(Request $request)
+    {
+        $request->validate([
+            'lahan_id' => 'required|exists:lahans,id',
+            'harga_per_hektar' => 'required|numeric',
+            'luas_per_hektar' => 'required|numeric',
         ]);
-}
+
+        $harga_per_hektar = $request->input('harga_per_hektar');
+        $luas_per_hektar = $request->input('luas_per_hektar');
+        $harga_sebenarnya = $harga_per_hektar * $luas_per_hektar;
+
+        // Hitung nilai fuzzy, nilai crisp, dan kesimpulan
+        $nilai_fuzzy = $this->evaluateFuzzy($harga_per_hektar);
+        $nilai_crisp = $this->calculateCrispValue($harga_per_hektar);
+        $kesimpulan_nilai_fuzzy = $this->getKesimpulan($harga_per_hektar);
+
+        // Simpan data dalam database
+        Harga::create([
+            'lahan_id' => $request->input('lahan_id'), 
+            'harga_per_hektar' => $harga_per_hektar,
+            'luas_per_hektar' => $luas_per_hektar,
+            'harga_sebenarnya' => $harga_sebenarnya,
+        ]);
+
+        return redirect()->route('harga.index')
+            ->with('success', 'Harga berhasil ditambahkan.')
+            ->with([
+                'nilai_fuzzy' => $nilai_fuzzy,
+                'nilai_crisp' => $nilai_crisp,
+                'kesimpulan_nilai_fuzzy' => $kesimpulan_nilai_fuzzy,
+            ]);
+    }
 
     // Menampilkan form untuk mengedit harga
     public function edit($id)
     {
         $harga = Harga::findOrFail($id);
-        return view('harga.edit', compact('harga'));
+        $usedLahanIds = Harga::where('id', '!=', $harga->id)->pluck('lahan_id')->toArray();
+        $lahans = Lahan::whereNotIn('id', $usedLahanIds)->get();
+        return view('harga.edit', compact('harga', 'lahans'));
     }
 
     // Memperbarui data harga
-public function update(Request $request, $id)
-{
-    $request->validate([
-        'harga_per_hektar' => 'required|numeric',
-        'luas_per_hektar' => 'required|numeric',
-    ]);
-
-    $harga_per_hektar = $request->input('harga_per_hektar');
-    $luas_per_hektar = $request->input('luas_per_hektar');
-    $harga_sebenarnya = $harga_per_hektar * $luas_per_hektar;
-
-    // Hitung nilai fuzzy, nilai crisp, dan kesimpulan
-    $nilai_fuzzy = $this->evaluateFuzzy($harga_per_hektar);
-    $nilai_crisp = $this->calculateCrispValue($harga_per_hektar);
-    $kesimpulan_nilai_fuzzy = $this->getKesimpulan($harga_per_hektar);
-
-    $harga = Harga::findOrFail($id);
-    $harga->update([
-        'harga_per_hektar' => $harga_per_hektar,
-        'luas_per_hektar' => $luas_per_hektar,
-        'harga_sebenarnya' => $harga_sebenarnya,
-    ]);
-
-    // Kirim data tambahan ke view
-    return redirect()->route('harga.index')
-        ->with('success', 'Harga berhasil diperbarui.')
-        ->with([
-            'nilai_fuzzy' => $nilai_fuzzy,
-            'nilai_crisp' => $nilai_crisp,
-            'kesimpulan_nilai_fuzzy' => $kesimpulan_nilai_fuzzy,
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'lahan_id' => 'required|exists:lahans,id',  // Pastikan 'lahan_id' harus ada dan valid
+            'harga_per_hektar' => 'required|numeric',
+            'luas_per_hektar' => 'required|numeric',
         ]);
-}
+
+        $harga_per_hektar = $request->input('harga_per_hektar');
+        $luas_per_hektar = $request->input('luas_per_hektar');
+        $harga_sebenarnya = $harga_per_hektar * $luas_per_hektar;
+
+        // Hitung nilai fuzzy, nilai crisp, dan kesimpulan
+        $nilai_fuzzy = $this->evaluateFuzzy($harga_per_hektar);
+        $nilai_crisp = $this->calculateCrispValue($harga_per_hektar);
+        $kesimpulan_nilai_fuzzy = $this->getKesimpulan($harga_per_hektar);
+
+        $harga = Harga::findOrFail($id);
+        $harga->update([
+            'lahan_id' => $request->input('lahan_id'),  // Sertakan 'lahan_id'
+            'harga_per_hektar' => $harga_per_hektar,
+            'luas_per_hektar' => $luas_per_hektar,
+            'harga_sebenarnya' => $harga_sebenarnya,
+        ]);
+
+        return redirect()->route('harga.index')
+            ->with('success', 'Harga berhasil diperbarui.')
+            ->with([
+                'nilai_fuzzy' => $nilai_fuzzy,
+                'nilai_crisp' => $nilai_crisp,
+                'kesimpulan_nilai_fuzzy' => $kesimpulan_nilai_fuzzy,
+            ]);
+    }
 
     // Menampilkan detail harga
-public function show($id)
-{
-    $harga = Harga::findOrFail($id);
+    public function show($id)
+    {
+        $harga = Harga::findOrFail($id);
 
-    // Hitung nilai fuzzy, nilai crisp, dan kesimpulan
-    $nilai_fuzzy = $this->evaluateFuzzy($harga->harga_per_hektar);
-    $nilai_crisp = $this->calculateCrispValue($harga->harga_per_hektar);
-    $kesimpulan_nilai_fuzzy = $this->getKesimpulan($harga->harga_per_hektar);
+        // Hitung nilai fuzzy, nilai crisp, dan kesimpulan
+        $nilai_fuzzy = $this->evaluateFuzzy($harga->harga_per_hektar);
+        $nilai_crisp = $this->calculateCrispValue($harga->harga_per_hektar);
+        $kesimpulan_nilai_fuzzy = $this->getKesimpulan($harga->harga_per_hektar);
 
-    return view('harga.show', compact('harga', 'nilai_fuzzy', 'nilai_crisp', 'kesimpulan_nilai_fuzzy'));
-}
+        return view('harga.show', compact('harga', 'nilai_fuzzy', 'nilai_crisp', 'kesimpulan_nilai_fuzzy'));
+    }
 
     // Menghitung nilai fuzzy
     private function evaluateFuzzy($harga_per_hektar)
