@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>SB Admin 2 - Blank</title>
+    <title>Agris Invest</title>
     @include('template.head')
 </head>
 

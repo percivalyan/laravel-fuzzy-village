@@ -1,11 +1,11 @@
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ url('index.html') }}">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ url('/') }}">
         <div class="sidebar-brand-icon rotate-n-15">
-            <i class="fas fa-laugh-wink"></i>
+            <i class="fas fa-leaf"></i> <!-- Change this icon if you have a specific logo -->
         </div>
-        <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+        <div class="sidebar-brand-text mx-3">Agris Invest</div>
     </a>
 
     <!-- Divider -->
@@ -27,14 +27,14 @@
         Data Lahan
     </div>
 
-    <!-- Nav Item - Pages Collapse Menu -->
+    <!-- Nav Item - Data Lahan Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-            aria-expanded="true" aria-controls="collapseTwo">
-            <i class="fas fa-fw fa-cog"></i>
+        <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseDataLahan"
+            aria-expanded="true" aria-controls="collapseDataLahan">
+            <i class="fas fa-fw fa-file-alt"></i> <!-- Icon for Data Lahan -->
             <span>Informasi Lahan</span>
         </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="collapseDataLahan" class="collapse" aria-labelledby="headingDataLahan" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Data Lahan:</h6>
                 <a class="collapse-item" href="{{ route('lahan.index') }}">Informasi</a>
@@ -52,20 +52,19 @@
         Perhitungan
     </div>
 
-    <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item active">
-        <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
-            aria-controls="collapsePages">
-            <i class="fas fa-fw fa-folder"></i>
+    <!-- Nav Item - Perhitungan Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePerhitungan" aria-expanded="true"
+            aria-controls="collapsePerhitungan">
+            <i class="fas fa-fw fa-calculator"></i> <!-- Icon for Perhitungan -->
             <span>Metode Hitung</span>
         </a>
-        <div id="collapsePages" class="collapse" aria-labelledby="headingPages"
-            data-parent="#accordionSidebar">
+        <div id="collapsePerhitungan" class="collapse" aria-labelledby="headingPerhitungan" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Fuzzy Tsukamoto:</h6>
                 <a class="collapse-item" href="{{ route('harga.index') }}">Harga Lahan</a>
                 <div class="collapse-divider"></div>
-                <h6 class="collapse-header">Fuzzy Sugeno</h6>
+                <h6 class="collapse-header">Fuzzy Sugeno:</h6>
                 <a class="collapse-item" href="{{ route('kesuburan.index') }}">Ukur Kesuburan</a>
             </div>
         </div>

@@ -8,7 +8,7 @@ use App\Http\Controllers\KesuburanController;
 use App\Http\Controllers\PeriodeController;
 
 Route::get('/', function () {
-    return view('layouts/app');
+    return view('layouts/dashboard');
 });
 
 Route::resource('harga', HargaController::class);
