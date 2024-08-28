@@ -49,8 +49,8 @@ class UserController extends Controller
         ]);
         if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
             $request->session()->regenerate();
-            return redirect()->intended('lahan');
-            return redirect()->intended('/');
+            return redirect()->intended('dashboard');
+            // return redirect()->intended('/');
         }
 
         return back()->withErrors([

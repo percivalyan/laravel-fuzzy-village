@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HargaController;
 use App\Http\Controllers\LahanController;
 use App\Http\Controllers\FotoController;
@@ -8,13 +9,18 @@ use App\Http\Controllers\KesuburanController;
 use App\Http\Controllers\PeriodeController;
 use App\Http\Controllers\UserController;
 
-// Route::get('/', function () {
-//     return view('index.lahan');
-// });
-
 Route::get('/', function () {
-    return view('user/login', ['title' => 'Login']);
+    if (Auth::check()) {
+        return redirect()->route('dashboard');
+    } else {
+        return view('user/login', ['title' => 'Login']);
+    }
 })->name('user/login');
+
+// Define the route for the dashboard
+Route::get('/dashboard', function () {
+    return view('dashboard');  // This should match the view file name in resources/views
+})->name('dashboard');
 
 Route::resource('harga', HargaController::class);
 Route::resource('lahan', LahanController::class);
